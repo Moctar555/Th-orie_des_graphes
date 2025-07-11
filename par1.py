@@ -34,3 +34,29 @@ def initialiser_structures():
     nodes = {t: [] for t in node_types}
     
     return node_types, relations, nodes
+# =====================================================================
+# PARTIE 4 : PROGRAMME PRINCIPAL - Orchestration des fonctions
+# =====================================================================
+
+import networkx as nx
+import matplotlib.pyplot as plt
+import numpy as np
+
+def main():
+    # Initialisation des structures
+    node_types, relations, nodes = initialiser_structures()
+    
+    # Saisie des nœuds
+    nodes = saisir_noeuds(node_types, nodes)
+    
+    # Saisie des relations
+    G = saisir_relations(nodes, relations)
+    
+    # Configuration des couleurs
+    node_colors = configurer_couleurs()
+    
+    # Affichage du graphe
+    afficher_graphe(G, node_colors)
+
+if __name__ == "__main__":
+    main()
