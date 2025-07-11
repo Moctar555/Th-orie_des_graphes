@@ -93,6 +93,73 @@ def saisir_relations(nodes, relations):
     
     return G
 
+# =====================================================================
+# PARTIE 3 : VISUALISATION - Configuration et affichage du graphe
+# =====================================================================
+import networkx as nx
+import matplotlib.pyplot as plt
+
+def configurer_couleurs():
+    """Définit la palette de couleurs pour les types de nœuds"""
+    return {
+        'client': '#FF9999',     # Rouge clair
+        'entreprise': '#9999FF', # Bleu clair
+        'ville': '#99FF99',      # Vert clair
+        'pays': '#FFCC99',       # Orange clair
+        'numero': '#CCCCCC',     # Gris
+        'produit': '#FF99FF',    # Rose
+        'employe': '#FFFF99',    # Jaune
+        'livreur': '#99FFFF',    # Cyan
+        'magasin': '#FFCCCC'     # Rose pâle
+    }
+
+def afficher_graphe(G, node_colors):
+    """Crée et affiche la visualisation du graphe"""
+    plt.figure(figsize=(14, 10))
+    
+    # Utiliser une disposition automatique
+    pos = nx.spring_layout(G, seed=42, k=0.8)
+    
+    # Dessin des nœuds
+    for node_type, color in node_colors.items():
+        nodelist = [node for node, data in G.nodes(data=True) if data.get('type') == node_type]
+        if nodelist:
+            nx.draw_networkx_nodes(
+                G, pos, 
+                nodelist=nodelist, 
+                node_color=color, 
+                node_size=2000, 
+                label=node_type
+            )
+    
+    # Dessin des étiquettes de nœuds
+    nx.draw_networkx_labels(G, pos, font_size=9)
+    
+    # Dessin des arêtes avec des flèches
+    nx.draw_networkx_edges(
+        G, pos, 
+        edgelist=G.edges(), 
+        arrowstyle='->', 
+        arrowsize=25, 
+        edge_color='gray',
+        width=1.5,
+        node_size=2000
+    )
+    
+    # Dessin des étiquettes de relations
+    edge_labels = nx.get_edge_attributes(G, 'label')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8)
+    
+    # Légende et titre
+    plt.legend(scatterpoints=1)
+    plt.title("Graphe de la gestion d'une Entreprise")
+    plt.axis("off")
+    plt.tight_layout()
+    plt.show()
+    
+    print("==========================================================================")
+    print("Graphe généré avec succès")
+    print("==========================================================================")
 
 # =====================================================================
 # PARTIE 4 : PROGRAMME PRINCIPAL - Orchestration des fonctions
